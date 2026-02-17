@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import { getWeatherByCity } from "./services/weatherApi";
+import Footer from "./components/Footer";
 
 export default function App() {
   const [weather, setWeather] = useState(null);
@@ -21,14 +22,18 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white flex flex-col">
       <Navbar
         weather={weather}
         category={category}
         setCategory={setCategory}
       />
 
-      <Home category={category} />
+      <main className="flex-1">
+        <Home category={category} />
+      </main>
+
+      <Footer />
     </div>
   );
 }
