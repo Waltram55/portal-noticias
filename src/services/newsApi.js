@@ -1,12 +1,8 @@
-const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
-
-// GNews topics válidos:
+// categories válidas:
 // world, nation, business, technology, sports, health, science, entertainment
 
 export async function getNewsByCategory(category = "nation") {
-  const url = `https://gnews.io/api/v4/top-headlines?country=ar&lang=es&topic=${category}&max=12&token=${API_KEY}`;
-
-  const res = await fetch(url);
+  const res = await fetch(`/api/news?topic=${category}`);
 
   if (!res.ok) {
     throw new Error("Error cargando noticias");
@@ -14,5 +10,5 @@ export async function getNewsByCategory(category = "nation") {
 
   const data = await res.json();
 
-  return data.articles;
+  return data.articles || [];
 }
