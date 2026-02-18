@@ -4,7 +4,7 @@ import FeaturedNews from "../components/FeaturedNews";
 import NewsCard from "../components/NewsCard";
 import NewsSkeleton from "../components/NewsSkeleton";
 
-export default function Home({ category }) {
+export default function Home({ category, search }) {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,8 +27,14 @@ export default function Home({ category }) {
     loadNews();
   }, [category]);
 
-  const destacado = news[0];
-  const restantes = news.slice(1);
+  // 🔥 Filtrado por buscador
+  const filteredNews = news.filter((article) => {
+    const text = `${article.title} ${article.description}`.toLowerCase();
+    return text.includes(search.toLowerCase());
+  });
+
+  const destacado = filteredNews[0];
+  const restantes = filteredNews.slice(1);
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-10">
@@ -42,11 +48,9 @@ export default function Home({ category }) {
 
       {loading && <NewsSkeleton />}
 
-      {error && (
-        <p className="mt-10 text-red-400 font-semibold">{error}</p>
-      )}
+      {error && <p className="mt-10 text-red-400 font-semibold">{error}</p>}
 
-      {!loading && !error && news.length > 0 && (
+      {!loading && !error && filteredNews.length > 0 && (
         <>
           <div className="mt-10">
             <FeaturedNews article={destacado} />
@@ -60,9 +64,13 @@ export default function Home({ category }) {
         </>
       )}
 
-      {!loading && !error && news.length === 0 && (
+      {!loading && !error && filteredNews.length === 0 && (
         <p className="mt-10 text-white/70">
-          No se encontraron noticias para esta categoría.
+          No se encontraron noticias para{" "}
+          <span className="text-emerald-400 font-semibold">
+            "{search}"
+          </span>
+          .
         </p>
       )}
     </section>
