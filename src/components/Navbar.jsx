@@ -1,6 +1,9 @@
 import WeatherCard from "./WeatherCard";
+import { useSearch } from "../context/SearchContext";
 
 export default function Navbar({ weather, category, setCategory }) {
+  const { search, setSearch } = useSearch();
+
   const categorias = [
     { nombre: "Argentina", valor: "nation" },
     { nombre: "Tecnología", valor: "technology" },
@@ -45,6 +48,8 @@ export default function Navbar({ weather, category, setCategory }) {
           <input
             type="text"
             placeholder="Buscar noticia..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className="bg-black/30 border border-white/10 text-white placeholder:text-white/40 rounded-xl px-4 py-2 w-56 md:w-64 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           />
         </div>
